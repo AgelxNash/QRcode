@@ -21,16 +21,15 @@ $config['input']=(string)$modx->getOption('input',$scriptProperties);  //Код�
 
 $config['method'] = (string)$modx->getOption('method',$scriptProperties,'png'); //Метод конвертации png, svg, text, eps
 $config['mode'] = (string)$modx->getOption('mode',$scriptProperties,'L'); //Режим корректности ошибок. L - 7%, M - 15%, Q - 25%, H - 30%
-$config['padding'] = intval($modx->getOption('padding',$scriptProperties,'2')); // размер белой рамки вокруг кода
+$config['padding'] = max((int)$modx->getOption('padding',$scriptProperties,'2'),0); // размер белой рамки вокруг кода
 $config['dot'] = min(max(intval($modx->getOption('dot',$scriptProperties,'4')),1),10); //1...10 размер каждого квадрата в коде (в px).
 $config['replace'] = intval($modx->getOption('replace',$scriptProperties,'0')); //Замена файла
 $config['folder'] = trim((string)$modx->getOption('folder',$scriptProperties,'QRcode'),'/'); //Папка куда сохранять картинку
 $config['filename'] = (string)$modx->getOption('filename',$scriptProperties); //Имя файла куда сохранять картинку
 $config['filename'] = $conifg['filename']=='' ? sha1($config['input']) : $config['filename'];
 
-/*
-//for Evolutuion
-if(isset($options)){
+$options = (string)$modx->getOption('options',$scriptProperties);
+if($options!=''){
     $options=explode("&",$options);
     foreach ($options as $value) {
         $params = explode("=", $value,2);
@@ -39,7 +38,7 @@ if(isset($options)){
         }
         
     }
-}*/
+}
 $flag = false;
 switch(true){
     case ($config['input']==''): {
@@ -71,8 +70,9 @@ switch(true){
 }
 
 if($flag){
+    $config['folder'] .= '/'. $config['mode'].'/'.$config['dot'].'-'.$config['padding'];
     $out = $config['folder'].'/'.$config['filename'].'.'.$config['method'];
-    $fullpath = $modx->getOption('assets_path').$out;
+    $fullpath = $modx->getOption('assets_path').$config['folder'].'/';
     
     $modx->getService('fileHandler','modFileHandler');
     $dir = $modx->fileHandler->make($fullpath,array(),'modDirectory');
@@ -81,18 +81,16 @@ if($flag){
     }
     $dir->create();
     
-    if($config['replace'] || (!$config['replace'] && !file_exists($fullpath))){
+    if($config['replace'] || (!$config['replace'] && !file_exists($modx->getOption('assets_path').$out))){
         QRcode::$config['method'](
         	$config['input'],
-    		$fullpath,
+    		$modx->getOption('assets_path').$out,
     		$config['mode'],
     		$config['dot'],
     		$config['padding']
     	);
-        
     }
 }else{
 	$out = '';
 }
-
 return $out;
