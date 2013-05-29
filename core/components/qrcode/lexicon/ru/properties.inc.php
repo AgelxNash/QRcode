@@ -9,7 +9,7 @@
 * @license GNU General Public License (GPL), http://www.gnu.org/copyleft/gpl.html
 * @author Agel_Nash <Agel_Nash@xaker.ru>
 * @date 29.05.2012
-* @version 1.0
+* @version 1.0.0
 *
 */
 /**

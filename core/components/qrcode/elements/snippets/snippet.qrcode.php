@@ -9,7 +9,7 @@
 * @license GNU General Public License (GPL), http://www.gnu.org/copyleft/gpl.html
 * @author Agel_Nash <Agel_Nash@xaker.ru>
 * @date 29.05.2012
-* @version 1.0
+* @version 1.0.0
 *
 */
 if(empty($modx) || !($modx instanceof modX)) return '';
@@ -25,7 +25,8 @@ $config['padding'] = intval($modx->getOption('padding',$scriptProperties,'2')); 
 $config['dot'] = min(max(intval($modx->getOption('dot',$scriptProperties,'4')),1),10); //1...10 размер каждого квадрата в коде (в px).
 $config['replace'] = intval($modx->getOption('replace',$scriptProperties,'0')); //Замена файла
 $config['folder'] = trim((string)$modx->getOption('folder',$scriptProperties,'QRcode'),'/'); //Папка куда сохранять картинку
-$config['filename'] = (string)$modx->getOption('filename',$scriptProperties,sha1($config['input'])); //Имя файла куда сохранять картинку
+$config['filename'] = (string)$modx->getOption('filename',$scriptProperties); //Имя файла куда сохранять картинку
+$config['filename'] = $conifg['filename']=='' ? sha1($config['input']) : $config['filename'];
 
 /*
 //for Evolutuion

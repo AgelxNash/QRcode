@@ -21,7 +21,7 @@ $snippets = array();
 $snippets[0]= $modx->newObject('modSnippet');
 $snippets[0]->fromArray(array(
     'id' => 0,
-    'name' => PKG_NAME_LOWER,
+    'name' => PKG_NAME,
     'description' => 'QRcode generator',
     'snippet' => getSnippetContent($sources['source_core'].'/elements/snippets/snippet.qrcode.php'),
 ));
